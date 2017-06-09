@@ -24,7 +24,7 @@
       "pagePath": "pages/logs/logs",
       "iconPath": "image/statistics.png",
       "selectedIconPath": "image/statistics_highlight.png",
-      "text": "记录"
+      "text": "统计"
     }, {
       "pagePath": "pages/setting/setting",
       "iconPath": "image/setting.png",

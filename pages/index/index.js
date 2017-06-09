@@ -25,7 +25,12 @@ Page({
     rightDeg: initDeg.right
   },
 
+
   onShow: function() {
+    wx.setNavigationBarTitle({
+      title: '首页'
+    })
+
     if (this.data.isRuning) return
     let workTime = util.formatTime(wx.getStorageSync('workTime'), 'HH')
     let restTime = util.formatTime(wx.getStorageSync('restTime'), 'HH')
@@ -33,7 +38,7 @@ Page({
       workTime: workTime,
       restTime: restTime,
       remainTimeText: workTime + ':00'
-    })
+    });
   },
 
   startTimer: function(e) {
