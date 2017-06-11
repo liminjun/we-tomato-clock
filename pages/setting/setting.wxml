@@ -5,7 +5,7 @@
 	    <slider 
 	    	bindchange="changeWorkTime" 
 	    	show-value="true" 
-	    	min="1"
+	    	min="5"
 	    	max="60"
 	    	value="{{workTime}}"
 	    	left-icon="cancel" 
@@ -19,15 +19,15 @@
 	    <slider 
 	    	bindchange="changeRestTime" 
 	    	show-value="true" 
-	    	min="5"
-	    	max="60"
+	    	min="1"
+	    	max="10"
 	    	value="{{restTime}}"
 	    	left-icon="cancel" 
 	    	right-icon="success_no_circle"/>
 	  </view>
 	</view>
 
-	<view class="section panel">
+	<!--<view class="section panel">
 	  <view class="section_title">
 	  	<text>主页背景</text>
 	  </view>
@@ -44,6 +44,6 @@
 	  <view class="section_body">
 	  	<text bindtab="" class="section_tip">选择铃声 > </text>
 	  </view>
-	</view>
+	</view>-->
 
 </view>

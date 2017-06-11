@@ -1,11 +1,16 @@
 const util = require('../../utils/util.js')
 const defaultLogName = {
   work: '工作',
-  rest: '休息'
+  rest: '休息',
+  study:"学习",
+  sport:"运动",
+  summary:"总结"
 }
 const actionName = {
   stop: '停止',
-  start: '开始'
+  start: '开始',
+  end:"结束",
+  cancel:"放弃"
 }
 
 const initDeg = {
@@ -26,7 +31,7 @@ Page({
   },
 
 
-  onShow: function() {
+  onShow: function () {
     wx.setNavigationBarTitle({
       title: '首页'
     })
@@ -41,23 +46,23 @@ Page({
     });
   },
 
-  startTimer: function(e) {
+  startTimer: function (e) {
     let startTime = Date.now()
     let isRuning = this.data.isRuning
     let timerType = e.target.dataset.type
-    let showTime = this.data[timerType + 'Time']
+    let showTime = this.data['workTime']
     let keepTime = showTime * 60 * 1000
     let logName = this.logName || defaultLogName[timerType]
 
     if (!isRuning) {
-      this.timer = setInterval((function() {
+      this.timer = setInterval((function () {
         this.updateTimer()
         this.startNameAnimation()
       }).bind(this), 1000)
     } else {
       this.stopTimer()
     }
-
+    
     this.setData({
       isRuning: !isRuning,
       completed: false,
@@ -78,7 +83,7 @@ Page({
     this.saveLog(this.data.log)
   },
 
-  startNameAnimation: function() {
+  startNameAnimation: function () {
     let animation = wx.createAnimation({
       duration: 450
     })
@@ -88,19 +93,43 @@ Page({
       nameAnimation: animation.export()
     })
   },
+  pauseTimer: function (e) {
 
-  stopTimer: function() {
+  },
+  cancelTimer: function (e) {
+    console.log(e);
+    this.stopTimer();
+
+    let workTime = util.formatTime(wx.getStorageSync('workTime'), 'HH')
+    this.setData({
+      remainTimeText: workTime + ':00'
+    });
+    var log=this.data.log;
+    this.data.log = {
+        name: log.name,
+        startTime:log.startTime,
+        endTime: log.keepTime +log.startTime,
+        action: actionName['cancel'],
+        type: defaultLogName[log.type]
+      }
+
+      this.saveLog(this.data.log)
+  },
+  stopTimer: function (e) {
     // reset circle progress
+
+    debugger;
     this.setData({
       leftDeg: initDeg.left,
-      rightDeg: initDeg.right
-    })
+      rightDeg: initDeg.right,
+      isRuning: false
+    });
 
     // clear timer
     this.timer && clearInterval(this.timer)
   },
 
-  updateTimer: function() {
+  updateTimer: function () {
     let log = this.data.log
     let now = Date.now()
     let remainingTime = Math.round((log.endTime - now) / 1000)
@@ -119,6 +148,18 @@ Page({
       this.setData({
         completed: true
       })
+      
+      this.data.log = {
+        name: log.name,
+        startTime:log.startTime,
+        endTime: log.keepTime +log.startTime,
+        action: actionName['end'],
+        type: defaultLogName[log.type]
+      }
+
+      this.saveLog(this.data.log)
+
+
       this.stopTimer()
       return
     }
@@ -139,11 +180,11 @@ Page({
     }
   },
 
-  changeLogName: function(e) {
+  changeLogName: function (e) {
     this.logName = e.detail.value
   },
 
-  saveLog: function(log) {
+  saveLog: function (log) {
     var logs = wx.getStorageSync('logs') || []
     logs.unshift(log)
     wx.setStorageSync('logs', logs)

@@ -5,36 +5,49 @@ Page({
     modalHidden: true,
     toastHidden: true
   },
-  onShow: function() {
+  onShow: function () {
     wx.setNavigationBarTitle({
-      title: '任务记录'
+      title: '任务统计'
     })
     this.getLogs()
   },
-  set: function() {
+  set: function () {
 
   },
-  getLogs: function() {
-    let logs = wx.getStorageSync('logs')
-    logs.forEach(function(item, index, arry) {
-      item.startTime = new Date(item.startTime).toLocaleString()
-    })
-    this.setData({
-      logs: logs
-    })
+  getLogs: function () {
+    try {
+      var logs = wx.getStorageSync('logs')
+      if (logs) {
+        logs.forEach(function (item, index, arry) {
+          item.startTime = new Date(item.startTime).toLocaleString()
+        })
+
+      } else {
+        logs = [];
+      }
+      this.setData({
+        logs: logs
+      })
+
+    } catch (e) {
+      console.log(e);
+    }
+
+
+
   },
-  onLoad: function() {},
-  switchModal: function() {
+  onLoad: function () { },
+  switchModal: function () {
     this.setData({
       modalHidden: !this.data.modalHidden
     })
   },
-  hideToast: function() {
+  hideToast: function () {
     this.setData({
       toastHidden: true
     })
   },
-  clearLog: function(e) {
+  clearLog: function (e) {
     wx.setStorageSync('logs', [])
     this.switchModal()
     this.setData({

@@ -56,12 +56,17 @@ button {
 
 .nodata_img{
 	display: block;
-	width: 45px;
-	height: 45px;
+	width: 100px;
+	height: 100px;
+	margin-top: 50%;
+	top:-50px;
 }
 
 .nodata_text{
 	color:#dedede;
 	font-size: 12px;
 	padding-left: 10px;
+}
+button{
+	padding: 10px 0;
 }
