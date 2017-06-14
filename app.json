@@ -2,7 +2,8 @@
   "pages": [
     "pages/index/index",
     "pages/logs/logs",
-    "pages/setting/setting"
+    "pages/setting/setting",
+    "pages/statistics/statistics"
   ],
   "window": {
     "backgroundTextStyle": "light",
@@ -21,7 +22,7 @@
       "selectedIconPath": "image/home_highlight.png",
       "text": "主页"
     }, {
-      "pagePath": "pages/logs/logs",
+      "pagePath": "pages/statistics/statistics",
       "iconPath": "image/statistics.png",
       "selectedIconPath": "image/statistics_highlight.png",
       "text": "统计"

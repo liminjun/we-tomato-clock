@@ -145,6 +145,8 @@ Page({
         remainTimeText: remainTimeText
       })
     } else if (remainingTime == 0) {
+      //任务完成
+
       this.setData({
         completed: true
       })
@@ -159,6 +161,11 @@ Page({
 
       this.saveLog(this.data.log)
 
+      var tomato={
+        type:defaultLogName[log.type],
+        total:1
+      };
+      this.saveTomato(tomato);
 
       this.stopTimer()
       return
@@ -188,5 +195,10 @@ Page({
     var logs = wx.getStorageSync('logs') || []
     logs.unshift(log)
     wx.setStorageSync('logs', logs)
+  },
+  saveTomato:function(tomato){
+    var tomatos=wx.getStorageSync('tomatos')||[];
+    tomatos.unshift(tomato);
+    wx.setStorageSync("tomatos",tomatos);
   }
 })
