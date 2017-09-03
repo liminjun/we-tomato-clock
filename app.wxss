@@ -1,31 +1,4 @@
-view,
-sroll-view,
-swiper,
-icon,
-text,
-progress,
-button,
-checkbox,
-form,
-input,
-label,
-input,
-picker,
-radio,
-slider,
-switch,
-action-sheet,
-modal,
-toast,
-loading,
-navigator,
-audio,
-image,
-video,
-map,
-canvas {
-  box-sizing: border-box;
-}
+@import 'style/weui.wxss';
 
 .hide {
   display: none!important;
@@ -69,4 +42,44 @@ button {
 }
 button{
 	padding: 10px 0;
+}
+
+
+.page__hd {
+    padding: 0px;
+}
+
+.page__bd {
+    padding-bottom: 40px;
+}
+
+.page__bd_spacing {
+    padding-left: 15px;
+    padding-right: 15px;
+}
+
+.page__ft {
+    padding-bottom: 10px;
+    text-align: center;
+}
+
+.page__title {
+    font-size: 20px;
+    font-weight: 400;
+    text-align: center;
+}
+
+.page__desc {
+    margin-top: 5px;
+    color: #888888;
+    text-align: center;
+    font-size: 14px;
+}
+.index-profile__img {
+    border-radius: 50%;
+    width: 200rpx;
+    height: 200rpx;
+    margin: 0 auto;
+    background-repeat: no-repeat;
+    background-size: contain;
 }

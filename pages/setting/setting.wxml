@@ -1,33 +1,28 @@
-<view class="container">
-	<view class="section panel">
-	  <text class="section_title">工作时长(分钟)</text>
-	  <view class="section_body">
-	    <slider 
-	    	bindchange="changeWorkTime" 
-	    	show-value="true" 
-	    	min="0.5"
-	    	max="60"
-	    	value="{{workTime}}"
-	    	left-icon="cancel" 
-	    	right-icon="success_no_circle"/>
-	  </view>
+<view class="page">
+	<view class="page__hd">
+		<view class="index-profile">
+			<view class="index-profile__img" style="background-image: url('{{profile.avatarUrl}}')"></view>
+		</view>
 	</view>
+	<view class="page__bd">
+		<view class="container">
+			<view class="section panel">
+				<text class="section_title">工作时长(分钟)</text>
+				<view class="section_body">
+					<slider bindchange="changeWorkTime" show-value="true" min="1" max="45" value="{{workTime}}" left-icon="cancel" right-icon="success_no_circle"
+					/>
+				</view>
+			</view>
 
-	<view class="section panel">
-	  <text class="section_title">休息时长(分钟)</text>
-	  <view class="section_body">
-	    <slider 
-	    	bindchange="changeRestTime" 
-	    	show-value="true" 
-	    	min="1"
-	    	max="10"
-	    	value="{{restTime}}"
-	    	left-icon="cancel" 
-	    	right-icon="success_no_circle"/>
-	  </view>
-	</view>
+			<view class="section panel">
+				<text class="section_title">休息时长(分钟)</text>
+				<view class="section_body">
+					<slider bindchange="changeRestTime" show-value="true" min="1" max="10" value="{{restTime}}" left-icon="cancel" right-icon="success_no_circle"
+					/>
+				</view>
+			</view>
 
-	<!--<view class="section panel">
+			<!--<view class="section panel">
 	  <view class="section_title">
 	  	<text>主页背景</text>
 	  </view>
@@ -46,4 +41,16 @@
 	  </view>
 	</view>-->
 
+		</view>
+		<view class="weui-cells weui-cells_after-title">
+			<navigator url="/pages/feedback/feedback" class="weui-cell weui-cell_access" hover-class="weui-cell_active">
+				<view class="weui-cell__bd">意见反馈</view>
+				<view class="weui-cell__ft weui-cell__ft_in-access"></view>
+			</navigator>
+			<navigator url="/pages/about/about" class="weui-cell weui-cell_access" hover-class="weui-cell_active">
+				<view class="weui-cell__bd">关于我们</view>
+				<view class="weui-cell__ft weui-cell__ft_in-access"></view>
+			</navigator>
+		</view>
+	</view>
 </view>

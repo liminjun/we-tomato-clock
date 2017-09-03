@@ -1,0 +1,18 @@
+<view class="page">
+  <view class="page__hd">
+    
+    <view class="page__title">Scrum番茄闹钟</view>
+    <view class="page__desc">敏捷个人管理必备工具，让您专注工作、学习、运动和娱乐。</view>
+  </view>
+  <view class="page__bd">
+    <view class="weui-cells__title">联系我们:</view>
+    <view class="weui-cells weui-cells_after-title">
+      <view class="weui-cell">
+        <view class="weui-cell__bd">微信：liminjun88</view>
+      </view>
+      <view class="weui-cell">
+        <view class="weui-cell__bd">邮箱：liminjun2017@gmail.com</view>
+      </view>
+    </view>
+  </view>
+</view>

@@ -3,7 +3,9 @@
     "pages/index/index",
     "pages/logs/logs",
     "pages/setting/setting",
-    "pages/statistics/statistics"
+    "pages/statistics/statistics",
+    "pages/feedback/feedback",
+    "pages/about/about"
   ],
   "window": {
     "backgroundTextStyle": "light",

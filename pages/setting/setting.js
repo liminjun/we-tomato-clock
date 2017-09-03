@@ -1,4 +1,14 @@
+var app = getApp();
 Page({
+  data: {
+    profile: null
+  },
+  onLoad(options) {
+    var result = app.getUserInfo();
+    this.setData({
+      profile: app.getUserInfo()
+    })
+  },
   onShow: function() {
     wx.setNavigationBarTitle({
       title: '设置'
