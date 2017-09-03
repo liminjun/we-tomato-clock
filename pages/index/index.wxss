@@ -114,10 +114,10 @@
 }
 
 .timer_footer {
-    display: flex;
+
     justify-content: center;
     align-items: center;
-    flex: 1;
+
     padding-top: 40px;
     transition: all .3s;
 }
@@ -125,17 +125,19 @@
 .timer_footer>button {}
 
 .timer .timer_ctrl {
-    display: flex;
+    float: left;
     justify-content: center;
     align-items: center;
     text-align: center;
-    font-size: 12px;
+    font-size: 14px;
     color: #fff;
     width: 80px;
     height: 80px;
-    margin: 0 20px;
+    margin: 10px 20px;
     border-radius: 50%;
     transition: all .7s;
+    background-color: #3197ed;
+    line-height: 80px;
 }
 
 #btn-work {

@@ -27,7 +27,9 @@ Page({
     completed: false,
     isRuning: false,
     leftDeg: initDeg.left,
-    rightDeg: initDeg.right
+    rightDeg: initDeg.right,
+
+    taskTypeList:[]
   },
 
 
@@ -200,5 +202,24 @@ Page({
     var tomatos=wx.getStorageSync('tomatos')||[];
     tomatos.unshift(tomato);
     wx.setStorageSync("tomatos",tomatos);
-  }
+  },
+   onLoad(options) {
+    this.fetchTypeList()
+  },
+  //获取反馈分类列表
+  fetchTypeList:function() {
+    let that = this;
+    let tableID = 1322;
+    let params  = {
+      tableID
+    }
+
+    wx.BaaS.getRecordList(params).then((res) => {
+      that.setData({
+        taskTypeList: res.data.objects
+      })
+    }, (err) => {
+      console.dir(err)
+    });
+  },
 })
