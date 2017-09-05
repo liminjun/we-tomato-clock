@@ -17,7 +17,7 @@ const initDeg = {
   left: 45,
   right: -45,
 }
-
+var app = getApp();
 Page({
 
   data: {
@@ -29,7 +29,9 @@ Page({
     leftDeg: initDeg.left,
     rightDeg: initDeg.right,
 
-    taskTypeList:[]
+    taskTypeList:[],
+    workTime:null,
+    restTime:null
   },
 
 
@@ -39,22 +41,23 @@ Page({
     })
 
     if (this.data.isRuning) return
-    let workTime = util.formatTime(wx.getStorageSync('workTime'), 'HH')
-    let restTime = util.formatTime(wx.getStorageSync('restTime'), 'HH')
+    let workTime = util.formatTime(this.data.workTime, 'HH')
+    let restTime = util.formatTime(this.data.restTime, 'HH')
     this.setData({
       workTime: workTime,
       restTime: restTime,
       remainTimeText: workTime + ':00'
     });
   },
-
+  //开始任务
   startTimer: function (e) {
     let startTime = Date.now()
     let isRuning = this.data.isRuning
-    let timerType = e.target.dataset.type
+    let dataIndex = e.target.dataset.index;
     let showTime = this.data['workTime']
     let keepTime = showTime * 60 * 1000
-    let logName = this.logName || defaultLogName[timerType]
+    let typeName = this.logName || this.data.taskTypeList[dataIndex].name;
+    let typeId=this.data.taskTypeList[dataIndex].id;
 
     if (!isRuning) {
       this.timer = setInterval((function () {
@@ -68,23 +71,24 @@ Page({
     this.setData({
       isRuning: !isRuning,
       completed: false,
-      timerType: timerType,
+   
       remainTimeText: showTime + ':00',
-      taskName: logName
+      taskName: typeName
     })
 
+    debugger;
     this.data.log = {
-      name: logName,
+      typeName: typeName,
       startTime: Date.now(),
       keepTime: keepTime,
       endTime: keepTime + startTime,
       action: actionName[isRuning ? 'stop' : 'start'],
-      type: timerType
+      typeId: typeId
     }
 
-    this.saveLog(this.data.log)
+    //this.saveLog(this.data.log)
   },
-
+  //时钟动画
   startNameAnimation: function () {
     let animation = wx.createAnimation({
       duration: 450
@@ -98,24 +102,15 @@ Page({
   pauseTimer: function (e) {
 
   },
+  //取消任务
   cancelTimer: function (e) {
-    console.log(e);
+    
     this.stopTimer();
 
-    let workTime = util.formatTime(wx.getStorageSync('workTime'), 'HH')
+    let workTime = util.formatTime(this.data.workTime, 'HH')
     this.setData({
       remainTimeText: workTime + ':00'
     });
-    var log=this.data.log;
-    this.data.log = {
-        name: log.name,
-        startTime:log.startTime,
-        endTime: log.keepTime +log.startTime,
-        action: actionName['cancel'],
-        type: defaultLogName[log.type]
-      }
-
-      this.saveLog(this.data.log)
   },
   stopTimer: function (e) {
     // reset circle progress
@@ -148,26 +143,19 @@ Page({
       })
     } else if (remainingTime == 0) {
       //任务完成
-
       this.setData({
         completed: true
       })
       
       this.data.log = {
-        name: log.name,
+        typeName: log.typeName,
         startTime:log.startTime,
         endTime: log.keepTime +log.startTime,
-        action: actionName['end'],
-        type: defaultLogName[log.type]
+        typeId:log.typeId
       }
 
       this.saveLog(this.data.log)
 
-      var tomato={
-        type:defaultLogName[log.type],
-        total:1
-      };
-      this.saveTomato(tomato);
 
       this.stopTimer()
       return
@@ -188,25 +176,57 @@ Page({
       })
     }
   },
-
+  //自定义任务名字
   changeLogName: function (e) {
     this.logName = e.detail.value
   },
 
+  
+
   saveLog: function (log) {
-    var logs = wx.getStorageSync('logs') || []
-    logs.unshift(log)
-    wx.setStorageSync('logs', logs)
-  },
-  saveTomato:function(tomato){
-    var tomatos=wx.getStorageSync('tomatos')||[];
-    tomatos.unshift(tomato);
-    wx.setStorageSync("tomatos",tomatos);
-  },
+    var userId=app.getUserId();
+    
+        let that = this
+        let tableID = 1318; //反馈表ID    
+        let data = log;
+        data['userId']=userId;
+        debugger;
+        let objects = {
+          tableID,
+          data
+        }
+    
+        // 创建一个数据项
+        wx.BaaS.createRecord(objects).then((res) => {
+          console.log("保存数据成功!");
+        }, (err) => {
+          console.log("保存数据失败:"+err)
+        })
+      },
+
    onLoad(options) {
-    this.fetchTypeList()
+    this.fetchTypeList();
+    this.getSettingData();
   },
-  //获取反馈分类列表
+  //获取设置界面中工作时长和休息时长
+  getSettingData: function () {
+    var that=this;
+    let objects = {
+      tableID: 1323,
+      userId: app.getUserId()
+    };
+    wx.BaaS.getRecordList(objects).then((res) => {
+      
+      that.setData({
+        workTime: res.data.objects[0].taskMinutes,
+        restTime: res.data.objects[0].restMinutes
+      })
+    }, (err) => {
+      // err
+      console.dir(err);
+    });
+  },
+  //获取任务分类列表
   fetchTypeList:function() {
     let that = this;
     let tableID = 1322;

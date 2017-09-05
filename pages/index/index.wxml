@@ -27,7 +27,7 @@
 		<text class="task-tip">在接下来{{workTime}}分钟内，专注完成它。</text>
 	</view>
 	<view class="timer_footer">
-		<view wx:key="*this" wx:for="{{taskTypeList}}" wx:for-index="$index" wx:for-item="taskType" bindtap="startTimer" data-type="taskType.id"  class="timer_ctrl {{isRuning ? 'hide' : ''}}">{{taskType.name}}</view>
+		<view wx:key="*this" wx:for="{{taskTypeList}}" wx:for-index="$index" wx:for-item="taskType" bindtap="startTimer" data-index="{{$index}}"  class="timer_ctrl {{isRuning ? 'hide' : ''}}">{{taskType.name}}</view>
 	</view>
 
 
