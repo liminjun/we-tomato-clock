@@ -2,15 +2,15 @@ const util = require('../../utils/util.js')
 const defaultLogName = {
   work: '工作',
   rest: '休息',
-  study:"学习",
-  sport:"运动",
-  summary:"总结"
+  study: "学习",
+  sport: "运动",
+  summary: "总结"
 }
 const actionName = {
   stop: '停止',
   start: '开始',
-  end:"结束",
-  cancel:"放弃"
+  end: "结束",
+  cancel: "放弃"
 }
 
 const initDeg = {
@@ -29,9 +29,9 @@ Page({
     leftDeg: initDeg.left,
     rightDeg: initDeg.right,
 
-    taskTypeList:[],
-    workTime:null,
-    restTime:null
+    taskTypeList: [],
+    workTime: null,
+    restTime: null
   },
 
 
@@ -57,7 +57,7 @@ Page({
     let showTime = this.data['workTime']
     let keepTime = showTime * 60 * 1000
     let typeName = this.logName || this.data.taskTypeList[dataIndex].name;
-    let typeId=this.data.taskTypeList[dataIndex].id;
+    let typeId = this.data.taskTypeList[dataIndex].id;
 
     if (!isRuning) {
       this.timer = setInterval((function () {
@@ -67,11 +67,11 @@ Page({
     } else {
       this.stopTimer()
     }
-    
+
     this.setData({
       isRuning: !isRuning,
       completed: false,
-   
+
       remainTimeText: showTime + ':00',
       taskName: typeName
     })
@@ -104,7 +104,7 @@ Page({
   },
   //取消任务
   cancelTimer: function (e) {
-    
+
     this.stopTimer();
 
     let workTime = util.formatTime(this.data.workTime, 'HH')
@@ -146,12 +146,12 @@ Page({
       this.setData({
         completed: true
       })
-      
+      debugger;
       this.data.log = {
         typeName: log.typeName,
-        startTime:log.startTime,
-        endTime: log.keepTime +log.startTime,
-        typeId:log.typeId
+        startTime: log.startTime,
+        endTime: log.keepTime + log.startTime,
+        typeId: log.typeId
       }
 
       this.saveLog(this.data.log)
@@ -181,56 +181,59 @@ Page({
     this.logName = e.detail.value
   },
 
-  
+
 
   saveLog: function (log) {
-    var userId=app.getUserId();
-    
-        let that = this
-        let tableID = 1318; //反馈表ID    
-        let data = log;
-        data['userId']=userId;
-        debugger;
-        let objects = {
-          tableID,
-          data
-        }
-    
-        // 创建一个数据项
-        wx.BaaS.createRecord(objects).then((res) => {
-          console.log("保存数据成功!");
-        }, (err) => {
-          console.log("保存数据失败:"+err)
-        })
-      },
+    var userId = app.getUserId();
 
-   onLoad(options) {
+    let that = this
+    let tableID = 1318; //反馈表ID    
+    let data = log;
+    data['userId'] = userId;
+    data['startTime']=((new Date(log.startTime)).toISOString()).toString()
+    data['endTime']=((new Date(log.endTime)).toISOString()).toString();
+    
+    let objects = {
+      tableID,
+      data
+    }
+
+    // 创建一个数据项
+    wx.BaaS.createRecord(objects).then((res) => {
+      console.log("保存数据成功!");
+    }, (err) => {
+      console.log("保存数据失败:" + err)
+    })
+  },
+
+  onLoad(options) {
     this.fetchTypeList();
     this.getSettingData();
   },
   //获取设置界面中工作时长和休息时长
   getSettingData: function () {
-    var that=this;
+    var that = this;
     let objects = {
       tableID: 1323,
       userId: app.getUserId()
     };
     wx.BaaS.getRecordList(objects).then((res) => {
-      
+
       that.setData({
         workTime: res.data.objects[0].taskMinutes,
         restTime: res.data.objects[0].restMinutes
-      })
+      });
+      debugger;
     }, (err) => {
       // err
       console.dir(err);
     });
   },
   //获取任务分类列表
-  fetchTypeList:function() {
+  fetchTypeList: function () {
     let that = this;
     let tableID = 1322;
-    let params  = {
+    let params = {
       tableID
     }
 

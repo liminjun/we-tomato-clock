@@ -9,7 +9,7 @@
 			<view class="section panel">
 				<text class="section_title">工作时长(分钟)</text>
 				<view class="section_body">
-					<slider bindchange="changeWorkTime" show-value="true" min="0.5" max="45" value="{{workTime}}" left-icon="cancel" right-icon="success_no_circle"
+					<slider bindchange="changeWorkTime" show-value="true" min="1" max="45" value="{{workTime}}" left-icon="cancel" right-icon="success_no_circle"
 					/>
 				</view>
 				<text class="section_title">休息时长(分钟)</text>
