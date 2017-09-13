@@ -2,11 +2,13 @@ var app = getApp();
 Page({
   data: {
     profile: {
-      avatarUrl :"../../image/default_avatar.png"
+      avatarUrl: "../../image/default_avatar.png"
     },
-    workTime:25,
-    restTime:5,
-    recordId:null
+    workTime: 25,
+    restTime: 5,
+    recordId: null,
+    themeIndex:0,
+    themes:[]
   },
   onLoad(options) {
     var result = app.getUserInfo();
@@ -15,27 +17,51 @@ Page({
     });
 
     this.getSettingData();
+    this.fetchThemeList();
+  },
+  //bindCategoryChange
+  bindThemeChange: function (e) {
+    console.log('picker category 发生选择改变，携带值为', e.detail.value);
+    this.setData({
+      themeIndex: e.detail.value
+    })
+  },
+  //获取主题列表
+  fetchThemeList() {
+    let that = this
+    let tableID = 1325;
+    let objects = {
+      tableID
+    }
+
+    wx.BaaS.getRecordList(objects).then((res) => {
+      that.setData({
+        themes: res.data.objects
+      })
+    }, (err) => {
+      console.dir(err)
+    });
   },
   onShow: function () {
-    
+
   },
-  onHide:function(){
-    
+  onHide: function () {
+
     //用户设置了时长，再页面隐藏的时候保存到后台
 
   },
   getSettingData: function () {
-    var that=this;
+    var that = this;
     let objects = {
       tableID: 1323,
       userId: app.getUserId()
     };
     wx.BaaS.getRecordList(objects).then((res) => {
-      
+
       that.setData({
         workTime: res.data.objects[0].taskMinutes,
         restTime: res.data.objects[0].restMinutes,
-        recordId:res.data.objects[0].id
+        recordId: res.data.objects[0].id
       })
     }, (err) => {
       // err
@@ -44,7 +70,7 @@ Page({
   },
   changeWorkTime: function (e) {
     this.setData({
-      workTime:  e.detail.value
+      workTime: e.detail.value
     })
 
     wx.setStorage({
@@ -54,7 +80,7 @@ Page({
   },
   changeRestTime: function (e) {
     this.setData({
-      restTime:  e.detail.value
+      restTime: e.detail.value
     })
     wx.setStorage({
       key: 'restTime',
@@ -67,14 +93,16 @@ Page({
     let that = this
     let tableID = 1323; //setting表ID
 
-    let recordID=that.data.recordId;
+    let recordID = that.data.recordId;
 
-    let taskMinutes=that.data.workTime;
-    let restMinutes=that.data.restTime;
+    let taskMinutes = that.data.workTime;
+    let restMinutes = that.data.restTime;
 
     let data = {
       taskMinutes: parseFloat(taskMinutes),
-      restMinutes: parseFloat(restMinutes)
+      restMinutes: parseFloat(restMinutes),
+      themeId:that.data.themes[that.data.themeIndex].id,
+      themeName:that.data.themes[that.data.themeIndex].name
     }
     let objects = {
       tableID,

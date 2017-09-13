@@ -6,6 +6,22 @@ const defaultTime = {
 
 App({
   onLaunch: function () {
+    //加载主题
+    let objects = {
+      tableID: 1323,
+      userId: this.getUserId()
+    };
+    wx.BaaS.getRecordList(objects).then((res) => {
+
+      that.setData({
+        
+      })
+    }, (err) => {
+      // err
+      console.dir(err);
+    });
+
+
     let workTime = wx.getStorageSync('workTime')
     let restTime = wx.getStorageSync('restTime')
     if (!workTime) {

@@ -17,6 +17,14 @@
 					<slider bindchange="changeRestTime" show-value="true" min="1" max="10" value="{{restTime}}" left-icon="cancel" right-icon="success_no_circle"
 					/>
 				</view>
+
+				<text class="section_title">选择主题</text>
+				<view class="section_body">
+					<picker bindchange="bindThemeChange" value="{{themeIndex}}" range="{{themes}}" range-key="name">
+						<view class="weui-select weui-select_in-select-after">{{themes[themeIndex].name}}</view>
+					</picker>
+				</view>
+
 				<view class="button-sp-area">
 					<button class="weui-btn mini-btn" type="primary" size="mini" bindtap="saveSetting">保存</button>
 				</view>
