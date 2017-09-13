@@ -1,31 +1,29 @@
-<block wx:if="{{logs.length}}">
+<view wx:if="{{records.length}}">
 	<scroll-view class="container" scroll-y="true">
-	  <view class="log panel">
-	  	<view wx:key="*this" class="log_item" wx:for="{{records}}" wx:for-index="$index" wx:for-item="record">
-	  		<text class="log_start">{{record.type}}</text>
-	  		<text class="log_action">{{record.total}}</text>
-	  		 <image style="width: 200px; height: 200px; background-color: #eeeeee;" src="../../image/tomato.png"></image>
-	  	</view>
-	  </view>
-		
+		<view class="log panel">
+			
+			<view wx:key="*this" class="log_item" wx:for="{{records}}" wx:for-index="$index" wx:for-item="record">
+				<text class="log_start">{{record.typeName}}</text>
+				<text class="log_action">{{record.endTime}}</text>
+				<image style="width: 30px; height: 30px;" src="../../image/tomato.png"></image>
+			</view>
+		</view>
+
 	</scroll-view>
-	<view class="clear">
-		<button bindtap="switchModal" class="clear_btn" size="mini" >清除记录</button>
-	</view>
-	<modal 
-		title="提示" 
-		confirm-text="确定" 
-		cancel-text="取消" 
-		hidden="{{modalHidden}}" 
-		bindconfirm="clearLog" 
-		bindcancel="switchModal">
-	    是否清除记录？此操作不可恢复!
-	</modal>
-</block>
-<block wx:else>
+	<!-- <view class="clear">
+		<button bindtap="switchModal" class="clear_btn" size="mini">清除记录</button>
+	</view> -->
+</view>
+
+<view wx:else>
 	<view class="nodata">
 		<image class="nodata_img" src="../../image/nodata.png"></image>
 	</view>
-</block>
+</view>
+<!-- <view>
+	<modal title="提示" confirm-text="确定" cancel-text="取消" hidden="{{modalHidden}}" bindconfirm="clearLog" bindcancel="switchModal">
+		是否清除记录？此操作不可恢复!
+	</modal>
+</view>
 
-<toast hidden="{{toastHidden}}" bindchange="hideToast">清除成功！</toast>
+<toast hidden="{{toastHidden}}" bindchange="hideToast">清除成功！</toast> -->

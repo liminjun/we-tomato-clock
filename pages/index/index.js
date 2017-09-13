@@ -33,21 +33,45 @@ Page({
     workTime: null,
     restTime: null
   },
-
-
+  onLoad(options) {
+    this.fetchTypeList();
+    this.getSettingData();
+  },
+  onShareAppMessage: function (res) {
+    if (res.from === 'button') {
+      // 来自页面内转发按钮
+      console.log(res.target)
+    }
+    return {
+      title: 'Scrum番茄闹钟',
+      path: '/pages/index/index',
+      imageUrl: "/image/share.jpg",
+      success: function (res) {
+        wx.showToast({
+          title: '转发成功',
+          icon: 'success',
+          duration: 2000
+        });
+      },
+      fail: function (res) {
+        wx.showToast({
+          title: '转发失败，再次转发',
+          icon: 'success',
+          duration: 2000
+        });
+      },
+      complete: function (res) {
+        console.log("用户转发了");
+      }
+    }
+  },
   onShow: function () {
     wx.setNavigationBarTitle({
       title: '首页'
     })
 
     if (this.data.isRuning) return
-    let workTime = util.formatTime(this.data.workTime, 'HH')
-    let restTime = util.formatTime(this.data.restTime, 'HH')
-    this.setData({
-      workTime: workTime,
-      restTime: restTime,
-      remainTimeText: workTime + ':00'
-    });
+
   },
   //开始任务
   startTimer: function (e) {
@@ -76,7 +100,7 @@ Page({
       taskName: typeName
     })
 
-    debugger;
+
     this.data.log = {
       typeName: typeName,
       startTime: Date.now(),
@@ -114,8 +138,6 @@ Page({
   },
   stopTimer: function (e) {
     // reset circle progress
-
-    debugger;
     this.setData({
       leftDeg: initDeg.left,
       rightDeg: initDeg.right,
@@ -146,7 +168,7 @@ Page({
       this.setData({
         completed: true
       })
-      debugger;
+      
       this.data.log = {
         typeName: log.typeName,
         startTime: log.startTime,
@@ -190,9 +212,9 @@ Page({
     let tableID = 1318; //反馈表ID    
     let data = log;
     data['userId'] = userId;
-    data['startTime']=((new Date(log.startTime)).toISOString()).toString()
-    data['endTime']=((new Date(log.endTime)).toISOString()).toString();
-    
+    data['startTime'] = ((new Date(log.startTime)).toISOString()).toString()
+    data['endTime'] = ((new Date(log.endTime)).toISOString()).toString();
+
     let objects = {
       tableID,
       data
@@ -206,10 +228,7 @@ Page({
     })
   },
 
-  onLoad(options) {
-    this.fetchTypeList();
-    this.getSettingData();
-  },
+
   //获取设置界面中工作时长和休息时长
   getSettingData: function () {
     var that = this;
@@ -223,7 +242,12 @@ Page({
         workTime: res.data.objects[0].taskMinutes,
         restTime: res.data.objects[0].restMinutes
       });
-      debugger;
+      let workTime = util.formatTime(this.data.workTime, 'HH')
+      let restTime = util.formatTime(this.data.restTime, 'HH')
+
+      this.setData({
+        remainTimeText: workTime + ':00'
+      });
     }, (err) => {
       // err
       console.dir(err);

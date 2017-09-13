@@ -1,7 +1,9 @@
 var app = getApp();
 Page({
   data: {
-    profile: null,
+    profile: {
+      avatarUrl :"../../image/default_avatar.png"
+    },
     workTime:25,
     restTime:5,
     recordId:null
@@ -18,7 +20,7 @@ Page({
     
   },
   onHide:function(){
-    console.log("page hide.");
+    
     //用户设置了时长，再页面隐藏的时候保存到后台
 
   },
@@ -64,7 +66,7 @@ Page({
 
     let that = this
     let tableID = 1323; //setting表ID
-    debugger;
+
     let recordID=that.data.recordId;
 
     let taskMinutes=that.data.workTime;
