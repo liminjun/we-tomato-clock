@@ -44,7 +44,7 @@ App({
     })
 
     // 引入 BaaS SDK
-    require('./utils/sdk-v1.0.11.js')
+    require('./utils/sdk-v1.4.0.js')
 
     // 从 BaaS 后台获取 ClientID
     let clientId = 'e565b5fcd30ce9a1271e'
@@ -54,28 +54,14 @@ App({
     let userId = this.getUserId();
     wx.BaaS.init(clientId)
     if (!userId) {
-      wx.BaaS.login()
+      wx.BaaS.login(false)
         .then(res => {
-          console.log('BaaS is logined!')
+          console.log('BaaS is logined!');
+          console.log("用户在用户表(知晓云)中的 ID",res.id);
         }).catch(err => {
-          console.dir(err)
+          console.dir(err);
         })
     }
-
-    //加载主题
-    let objects = {
-      tableID: 1323,
-      userId: this.getUserId()
-    };
-    wx.BaaS.getRecordList(objects).then((res) => {
-
-      that.setData({
-
-      })
-    }, (err) => {
-      // err
-      console.dir(err);
-    });
 
   },
 
@@ -83,7 +69,6 @@ App({
     if (this.userId) {
       return this.userId
     }
-
     this.userId = wx.BaaS.storage.get('uid')
     return this.userId
   },
@@ -93,7 +78,6 @@ App({
     if (this.userInfo) {
       return this.userInfo
     }
-
     this.userInfo = wx.BaaS.storage.get('userinfo')
     return this.userInfo
   }

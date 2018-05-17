@@ -68,9 +68,11 @@ Page({
   onShow: function () {
     wx.setNavigationBarTitle({
       title: '首页'
-    })
+    });
 
-    if (this.data.isRuning) return
+    this.getSettingData();
+
+    //if (this.data.isRuning) return
 
   },
   //开始任务
