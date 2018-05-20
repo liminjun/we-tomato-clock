@@ -74,8 +74,11 @@ Page({
     })
   },
 
+  //页面展示是显示
   onShow: function () {
-
+    wx.setNavigationBarTitle({
+      title: '设置'
+    });
   },
   onHide: function () {
 

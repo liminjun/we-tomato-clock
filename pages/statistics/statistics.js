@@ -10,36 +10,38 @@ Page({
     wx.setNavigationBarTitle({
       title: '统计'
     })
-    
+
   },
   set: function () {
 
   },
   getTomatos: function () {
-    var that=this;
-    let userId = app.getUserId();
+    var that = this;
+
+
+
+    let query = new wx.BaaS.Query();
+    query.compare('userId', '=', app.getUserId().toString());
+
     let tableID = 1318;
-    let objects = {
-      tableID,
-      userId: userId,
-      order_by:"-created_by"
-    }
-    wx.BaaS.getRecordList(objects).then((res) => {
-      // success
+    let TomatoObject = new wx.BaaS.TableObject(tableID);
+
+    TomatoObject.setQuery(query).orderBy('-created_at').find().then((res) => {
       for (var i = 0; i < res.data.objects.length; i++) {
-        res.data.objects[i].endTime = new Date(res.data.objects[i].endTime).toLocaleDateString()+" "+new Date(res.data.objects[i].endTime).toLocaleTimeString();
+        res.data.objects[i].endTime = new Date(res.data.objects[i].endTime).toLocaleDateString() + " " + new Date(res.data.objects[i].endTime).toLocaleTimeString();
       }
       that.setData({
-        records:res.data.objects
+        records: res.data.objects
       });
     }, (err) => {
       // err
-    })
+      console.dir(err);
+    });
   },
-  onLoad: function () { 
+  onLoad: function () {
     this.getTomatos();
   },
-  coverDate:function(datetime){
+  coverDate: function (datetime) {
     return new Date(datetime).toLocaleDateString()
   },
   switchModal: function () {

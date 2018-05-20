@@ -225,7 +225,7 @@ Page({
     var userId = this.data.userId;
     let tableID = 1318; //tomato表id    
     let data = log;
-    data['userId'] = userId;
+    data['userId'] = userId.toString();
     data['startTime'] = ((new Date(log.startTime)).toISOString()).toString()
     data['endTime'] = ((new Date(log.endTime)).toISOString()).toString();
 
@@ -244,7 +244,6 @@ Page({
 
   //获取设置界面中工作时长和休息时长
   getSettingData: function (userId) {
-    debugger;
     var that = this;
 
     let query = new wx.BaaS.Query();
@@ -257,10 +256,14 @@ Page({
       that.setData({
         workTime: res.data.objects[0].taskMinutes,
         restTime: res.data.objects[0].restMinutes,
-        remainTimeText: workTime + ':00'
+        
       });
       let workTime = util.formatTime(this.data.workTime, 'HH')
-      let restTime = util.formatTime(this.data.restTime, 'HH')
+      let restTime = util.formatTime(this.data.restTime, 'HH');
+
+      that.setData({
+        remainTimeText: workTime + ':00'
+      })
 
     }, (err) => {
       // err
