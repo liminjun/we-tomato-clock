@@ -10,9 +10,6 @@
       <view class="weui-cell">
         <view class="weui-cell__bd">微信：liminjun88</view>
       </view>
-      <view class="weui-cell">
-        <view class="weui-cell__bd">邮箱：liminjun2017@gmail.com</view>
-      </view>
     </view>
   </view>
 </view>

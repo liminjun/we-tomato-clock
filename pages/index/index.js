@@ -31,12 +31,27 @@ Page({
 
     taskTypeList: [],
     workTime: null,
-    restTime: null
+    restTime: null,
+    userId: null
   },
   onLoad(options) {
+
+    //获取任务类型列表
     this.fetchTypeList();
-    this.getSettingData();
+    //获取到userId之后去获取用户对应的配置信息
+    wx.BaaS.login(false)
+      .then(res => {
+        var userId = res.id;
+        this.setData({
+          userId: userId
+        });
+        this.getSettingData(userId);
+      }).catch(err => {
+        console.dir(err);
+      })
+
   },
+  //分享设置
   onShareAppMessage: function (res) {
     if (res.from === 'button') {
       // 来自页面内转发按钮
@@ -45,7 +60,7 @@ Page({
     return {
       title: 'Scrum番茄闹钟',
       path: '/pages/index/index',
-      imageUrl: "/image/share.jpg",
+      //imageUrl: "/image/share.jpg",
       success: function (res) {
         wx.showToast({
           title: '转发成功',
@@ -65,15 +80,15 @@ Page({
       }
     }
   },
+  //页面展示是显示
   onShow: function () {
     wx.setNavigationBarTitle({
       title: '首页'
     });
-
-    this.getSettingData();
-
-    //if (this.data.isRuning) return
-
+    var userId = this.data.userId;
+    if (userId) {
+      this.getSettingData(userId);
+    }
   },
   //开始任务
   startTimer: function (e) {
@@ -97,7 +112,6 @@ Page({
     this.setData({
       isRuning: !isRuning,
       completed: false,
-
       remainTimeText: showTime + ':00',
       taskName: typeName
     })
@@ -111,8 +125,6 @@ Page({
       action: actionName[isRuning ? 'stop' : 'start'],
       typeId: typeId
     }
-
-    //this.saveLog(this.data.log)
   },
   //时钟动画
   startNameAnimation: function () {
@@ -125,6 +137,7 @@ Page({
       nameAnimation: animation.export()
     })
   },
+  //暂停任务
   pauseTimer: function (e) {
 
   },
@@ -138,6 +151,7 @@ Page({
       remainTimeText: workTime + ':00'
     });
   },
+  //任务结束
   stopTimer: function (e) {
     // reset circle progress
     this.setData({
@@ -170,7 +184,7 @@ Page({
       this.setData({
         completed: true
       })
-      
+
       this.data.log = {
         typeName: log.typeName,
         startTime: log.startTime,
@@ -208,53 +222,52 @@ Page({
 
 
   saveLog: function (log) {
-    var userId = app.getUserId();
-
-    let that = this
-    let tableID = 1318; //反馈表ID    
+    var userId = this.data.userId;
+    let tableID = 1318; //tomato表id    
     let data = log;
     data['userId'] = userId;
     data['startTime'] = ((new Date(log.startTime)).toISOString()).toString()
     data['endTime'] = ((new Date(log.endTime)).toISOString()).toString();
 
-    let objects = {
-      tableID,
-      data
-    }
 
-    // 创建一个数据项
-    wx.BaaS.createRecord(objects).then((res) => {
+    let TomatoObject = new wx.BaaS.TableObject(tableID);
+    let TomatoRecord = TomatoObject.create();
+    TomatoRecord.set(data).save().then(res => {
+      // success
       console.log("保存数据成功!");
-    }, (err) => {
+    }, err => {
+      // err
       console.log("保存数据失败:" + err)
-    })
+    });
   },
 
 
   //获取设置界面中工作时长和休息时长
-  getSettingData: function () {
+  getSettingData: function (userId) {
+    debugger;
     var that = this;
-    let objects = {
-      tableID: 1323,
-      userId: app.getUserId()
-    };
-    wx.BaaS.getRecordList(objects).then((res) => {
 
+    let query = new wx.BaaS.Query();
+    query.compare('userId', '=', userId.toString());
+
+    let tableID = 1323;
+    let SettingObject = new wx.BaaS.TableObject(tableID);
+
+    SettingObject.setQuery(query).find().then((res) => {
       that.setData({
         workTime: res.data.objects[0].taskMinutes,
-        restTime: res.data.objects[0].restMinutes
+        restTime: res.data.objects[0].restMinutes,
+        remainTimeText: workTime + ':00'
       });
       let workTime = util.formatTime(this.data.workTime, 'HH')
       let restTime = util.formatTime(this.data.restTime, 'HH')
 
-      this.setData({
-        remainTimeText: workTime + ':00'
-      });
     }, (err) => {
       // err
       console.dir(err);
     });
   },
+
   //获取任务分类列表
   fetchTypeList: function () {
     let that = this;

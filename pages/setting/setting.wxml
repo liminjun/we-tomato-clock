@@ -1,9 +1,11 @@
 <view class="page">
 	<view class="page__hd">
-		<button class="weui-btn mini-btn" open-type="getUserInfo" bindgetuserinfo="userInfoHandler">用户授权</button>
+		<button wx:if="{{!profile.nickName}}" class="weui-btn mini-btn" open-type="getUserInfo" bindgetuserinfo="userInfoHandler">用户授权</button>
+
 		<view class="index-profile">
 			<view class="index-profile__img" style="background-image: url('{{profile.avatarUrl}}')"></view>
 		</view>
+		<button wx:if="{{profile.nickName}}" class="weui-btn mini-btn" bindtap="logout">注销</button>
 	</view>
 	<view class="page__bd">
 		<view class="container">

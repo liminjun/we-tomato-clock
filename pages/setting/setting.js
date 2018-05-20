@@ -2,7 +2,8 @@ var app = getApp();
 Page({
   data: {
     profile: {
-      avatarUrl: "../../image/default_avatar.png"
+      avatarUrl: "../../image/default_avatar.png",
+      nickName: null
     },
     workTime: 25,
     restTime: 5,
@@ -11,18 +12,56 @@ Page({
     themes: []
   },
   onLoad(options) {
-    var result = app.getUserInfo();
-    this.setData({
-      profile: app.getUserInfo()
-    });
+
+    // this.setData({
+    //   profile: app.getUserInfo()
+    // });
 
     this.getSettingData();
- 
+
+  },
+  logout() {
+    // 登出 BaaS
+    wx.BaaS.logout().then(res => {
+      // success
+      this.setData({
+        profile: { avatarUrl: "../../image/default_avatar.png", nickName: null }
+      });
+      wx.showToast({
+        title: '注销成功',
+        icon: 'success',
+        duration: 2000
+      })
+    }, err => {
+      // err
+      wx.showToast({
+        title: '注销失败，请重试',
+        icon: 'none',
+        duration: 2000
+      })
+    })
   },
   userInfoHandler(data) {
     wx.BaaS.handleUserInfo(data).then(res => {
       // res 包含用户完整信息，详见下方描述
+      //设置头像和昵称
+      debugger;
+      console.log(res);
+      this.setData({
+        profile: { avatarUrl: res.avatarUrl, nickName: res.nickName }
+      });
     }, res => {
+      wx.showModal({
+        title: '提示',
+        content: '取消授权仅影响显示用户头像和昵称，其他功能不受限制!',
+        success: function (res) {
+          if (res.confirm) {
+            console.log('用户点击确定')
+          } else if (res.cancel) {
+            console.log('用户点击取消')
+          }
+        }
+      })
       // **res 有两种情况**：用户拒绝授权，res 包含基本用户信息：id、openid、unionid；其他类型的错误，如网络断开、请求超时等，将返回 Error 对象（详情见下方注解）
       // *Tips*：如果你的业务需要用户必须授权才可进行，由于微信的限制，10 分钟内不可再次弹出授权窗口，此时可以调用 [`wx.openSetting`](https://mp.weixin.qq.com/debug/wxadoc/dev/api/setting.html) 要求用户提供授权
     })
@@ -46,12 +85,12 @@ Page({
   //获取用户设置信息
   getSettingData: function () {
     var that = this;
- 
-    let query=new wx.BaaS.Query();
-    query.compare('userId','=',app.getUserId().toString());
 
-    let tableID=1323;
-    let SettingObject=new wx.BaaS.TableObject(tableID);
+    let query = new wx.BaaS.Query();
+    query.compare('userId', '=', app.getUserId().toString());
+
+    let tableID = 1323;
+    let SettingObject = new wx.BaaS.TableObject(tableID);
 
     SettingObject.setQuery(query).find().then((res) => {
       that.setData({
@@ -87,21 +126,21 @@ Page({
   saveSetting(e) {
 
     let that = this;
-   
 
-    
+
+
 
     let taskMinutes = that.data.workTime;
     let restMinutes = that.data.restTime;
 
- 
+
 
     // 编辑配置
     let tableID = 1323; //setting表ID
     let recordID = that.data.recordId;
 
-    let SettingObject=new wx.BaaS.TableObject(tableID);
-    let SettingRecord=SettingObject.getWithoutData(recordID);
+    let SettingObject = new wx.BaaS.TableObject(tableID);
+    let SettingRecord = SettingObject.getWithoutData(recordID);
     SettingRecord.set({
       taskMinutes: parseFloat(taskMinutes),
       restMinutes: parseFloat(restMinutes)

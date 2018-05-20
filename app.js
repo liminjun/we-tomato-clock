@@ -52,7 +52,7 @@ App({
 
 
     let userId = this.getUserId();
-    wx.BaaS.init(clientId)
+    wx.BaaS.init(clientId);
     if (!userId) {
       wx.BaaS.login(false)
         .then(res => {
