@@ -128,9 +128,8 @@ Page({
   },
   //时钟动画
   startNameAnimation: function () {
-    let animation = wx.createAnimation({
-      duration: 450
-    })
+    let animation = wx.createAnimation();
+
     animation.opacity(0.2).step()
     animation.opacity(1).step()
     this.setData({
@@ -253,14 +252,24 @@ Page({
     let SettingObject = new wx.BaaS.TableObject(tableID);
 
     SettingObject.setQuery(query).find().then((res) => {
-      that.setData({
-        workTime: res.data.objects[0].taskMinutes,
-        restTime: res.data.objects[0].restMinutes,
-        
-      });
+      debugger;
+      if (res.data.objects.length > 0) {
+        that.setData({
+          workTime: res.data.objects[0].taskMinutes,
+          restTime: res.data.objects[0].restMinutes,
+
+        });
+
+      } else {
+        that.setData({
+          workTime: 20,
+          restTime: 5,
+
+        });
+      }
+
       let workTime = util.formatTime(this.data.workTime, 'HH')
       let restTime = util.formatTime(this.data.restTime, 'HH');
-
       that.setData({
         remainTimeText: workTime + ':00'
       })

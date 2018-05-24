@@ -5,11 +5,40 @@ Page({
       avatarUrl: "../../image/default_avatar.png",
       nickName: null
     },
-    workTime: 25,
+    workTime: 20,
     restTime: 5,
     recordId: null,
     themeIndex: 0,
     themes: []
+  },
+  //分享设置
+  onShareAppMessage: function (res) {
+    if (res.from === 'button') {
+      // 来自页面内转发按钮
+      console.log(res.target)
+    }
+    return {
+      title: 'Scrum番茄闹钟',
+      path: '/pages/index/index',
+      //imageUrl: "/image/share.jpg",
+      success: function (res) {
+        wx.showToast({
+          title: '转发成功',
+          icon: 'success',
+          duration: 2000
+        });
+      },
+      fail: function (res) {
+        wx.showToast({
+          title: '转发失败，再次转发',
+          icon: 'success',
+          duration: 2000
+        });
+      },
+      complete: function (res) {
+        console.log("用户转发了");
+      }
+    }
   },
   onLoad(options) {
 
@@ -20,6 +49,7 @@ Page({
     this.getSettingData();
 
   },
+ 
   logout() {
     // 登出 BaaS
     wx.BaaS.logout().then(res => {
@@ -45,7 +75,6 @@ Page({
     wx.BaaS.handleUserInfo(data).then(res => {
       // res 包含用户完整信息，详见下方描述
       //设置头像和昵称
-      debugger;
       console.log(res);
       this.setData({
         profile: { avatarUrl: res.avatarUrl, nickName: res.nickName }
@@ -79,7 +108,9 @@ Page({
     wx.setNavigationBarTitle({
       title: '设置'
     });
+    this.getSettingData();
   },
+
   onHide: function () {
 
     //用户设置了时长，再页面隐藏的时候保存到后台
@@ -96,11 +127,20 @@ Page({
     let SettingObject = new wx.BaaS.TableObject(tableID);
 
     SettingObject.setQuery(query).find().then((res) => {
-      that.setData({
-        workTime: res.data.objects[0].taskMinutes,
-        restTime: res.data.objects[0].restMinutes,
-        recordId: res.data.objects[0].id
-      })
+      if (res.data.objects.length > 0) {
+        that.setData({
+          workTime: res.data.objects[0].taskMinutes,
+          restTime: res.data.objects[0].restMinutes,
+          recordId: res.data.objects[0].id
+        })
+      } else {
+        that.setData({
+          workTime: 20,
+          restTime: 5,
+          recordId: null
+        })
+      }
+
     }, (err) => {
       // err
       console.dir(err);
@@ -143,23 +183,49 @@ Page({
     let recordID = that.data.recordId;
 
     let SettingObject = new wx.BaaS.TableObject(tableID);
-    let SettingRecord = SettingObject.getWithoutData(recordID);
-    SettingRecord.set({
-      taskMinutes: parseFloat(taskMinutes),
-      restMinutes: parseFloat(restMinutes)
-    });
 
-    SettingRecord.update().then((res) => {
-
-      wx.showToast({
-        title: '保存成功',
-        icon: 'success',
-        duration: 2000
+ 
+    if (recordID) {
+      let SettingRecord = SettingObject.getWithoutData(recordID);
+      SettingRecord.set({
+        taskMinutes: parseFloat(taskMinutes),
+        restMinutes: parseFloat(restMinutes)
       });
 
+      SettingRecord.update().then((res) => {
 
-    }, (err) => {
-      console.log(err)
-    })
+        wx.showToast({
+          title: '保存成功',
+          icon: 'success',
+          duration: 2000
+        });
+
+
+      }, (err) => {
+        console.log(err)
+      })
+    } else {
+      //如果未设置过，这里是新增设置
+      let SettingRecord = SettingObject.create();
+      SettingRecord.set({
+        userId:app.getUserId().toString(),
+        taskMinutes: parseFloat(taskMinutes),
+        restMinutes: parseFloat(restMinutes)
+      });
+
+      SettingRecord.save().then((res) => {
+
+        wx.showToast({
+          title: '保存成功',
+          icon: 'success',
+          duration: 2000
+        });
+
+
+      }, (err) => {
+        console.log(err)
+      })
+    }
+
   },
 })

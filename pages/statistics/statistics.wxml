@@ -16,9 +16,9 @@
 </view>
 
 <view wx:else>
-	<view class="nodata">
+	<!-- <view class="nodata">
 		<image class="nodata_img" src="../../image/nodata.png"></image>
-	</view>
+	</view> -->
 </view>
 <!-- <view>
 	<modal title="提示" confirm-text="确定" cancel-text="取消" hidden="{{modalHidden}}" bindconfirm="clearLog" bindcancel="switchModal">
