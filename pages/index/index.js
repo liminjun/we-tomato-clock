@@ -252,7 +252,6 @@ Page({
     let SettingObject = new wx.BaaS.TableObject(tableID);
 
     SettingObject.setQuery(query).find().then((res) => {
-      debugger;
       if (res.data.objects.length > 0) {
         that.setData({
           workTime: res.data.objects[0].taskMinutes,

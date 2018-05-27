@@ -54,10 +54,15 @@
 
 		</view>
 		<view class="weui-cells weui-cells_after-title">
-			<navigator url="/pages/feedback/feedback" class="weui-cell weui-cell_access" hover-class="weui-cell_active">
+			<!-- <navigator url="/pages/feedback/feedback" class="weui-cell weui-cell_access" hover-class="weui-cell_active">
 				<view class="weui-cell__bd">意见反馈</view>
 				<view class="weui-cell__ft weui-cell__ft_in-access"></view>
+			</navigator> -->
+			<navigator class="weui-cell weui-cell_access" hover-class="weui-cell_active" target="miniProgram" open-type="navigate" app-id="wx8abaf00ee8c3202e" path="/pages/setting/setting" extra-data="{{extraData}}" version="release">
+				<view class="weui-cell__bd">吐个槽</view>
+				<view class="weui-cell__ft weui-cell__ft_in-access"></view>
 			</navigator>
+
 			<navigator url="/pages/about/about" class="weui-cell weui-cell_access" hover-class="weui-cell_active">
 				<view class="weui-cell__bd">关于我们</view>
 				<view class="weui-cell__ft weui-cell__ft_in-access"></view>

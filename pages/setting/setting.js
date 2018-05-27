@@ -9,7 +9,11 @@ Page({
     restTime: 5,
     recordId: null,
     themeIndex: 0,
-    themes: []
+    themes: [],
+    extraData:{
+      "id":	29822,
+      "customData":{}
+    }
   },
   //分享设置
   onShareAppMessage: function (res) {
