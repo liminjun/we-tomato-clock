@@ -57,7 +57,10 @@ Page({
 
     TomatoObject.setQuery(query).orderBy('-created_at').find().then((res) => {
       for (var i = 0; i < res.data.objects.length; i++) {
-        res.data.objects[i].endTime = new Date(res.data.objects[i].endTime).toLocaleDateString() + " " + new Date(res.data.objects[i].endTime).toLocaleTimeString();
+        var date1=res.data.objects[i].endTime.split("T")[0];
+        var date2=res.data.objects[i].endTime.split("T")[1].split(".")[0];
+        res.data.objects[i].endTime=date1+" "+date2;
+       
       }
       that.setData({
         records: res.data.objects
