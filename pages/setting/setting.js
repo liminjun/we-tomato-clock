@@ -9,7 +9,7 @@ Page({
     restTime: 5,
     recordId: null,
     themeIndex: 0,
-    themes: [],
+
     extraData:{
       "id":	29822,
       "customData":{}
@@ -101,7 +101,7 @@ Page({
   },
   //bindCategoryChange
   bindThemeChange: function (e) {
-    console.log('picker category 发生选择改变，携带值为', e.detail.value);
+   
     this.setData({
       themeIndex: e.detail.value
     })

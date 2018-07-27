@@ -1,14 +1,53 @@
 <view class="page">
   <view class="page__hd">
-    
+
     <view class="page__title">Scrum番茄闹钟</view>
-    <view class="page__desc">敏捷个人管理必备工具，让您专注工作、学习、运动和娱乐。</view>
+    <view class="page__desc">
+      <p>敏捷个人管理必备工具，让您专注工作、学习、运动和娱乐。</p>
+    </view>
+
   </view>
   <view class="page__bd">
-    <view class="weui-cells__title">联系我们:</view>
+    <view class="weui-cells__title">版本:</view>
+
     <view class="weui-cells weui-cells_after-title">
       <view class="weui-cell">
-        <view class="weui-cell__bd">微信：liminjun88</view>
+        <view class="weui-cell__bd">
+          <p>V1.2.2</p>
+
+        </view>
+      </view>
+    </view>
+
+
+
+    <view class="weui-cells__title">主要功能:</view>
+    <view class="weui-cells weui-cells_after-title">
+      <view class="weui-cell">
+        <view class="weui-cell__bd">
+          <p>1.自定义设置工作和休息时长</p>
+
+        </view>
+      </view>
+      <view class="weui-cell">
+        <view class="weui-cell__bd">
+
+          <p>2.允许用户选择多个任务类型，后续支持自定义类型</p>
+
+        </view>
+      </view>
+      <view class="weui-cell">
+        <view class="weui-cell__bd">
+
+          <p>3.支持统计番茄个数</p>
+
+        </view>
+      </view>
+      <view class="weui-cell">
+        <view class="weui-cell__bd">
+
+          <p>4.接入腾讯吐个槽服务</p>
+        </view>
       </view>
     </view>
   </view>

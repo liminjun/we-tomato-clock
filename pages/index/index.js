@@ -25,7 +25,7 @@ Page({
     timerType: 'work',
     log: {},
     completed: false,
-    isRuning: false,
+    isRuning: false,//默认未开始
     leftDeg: initDeg.left,
     rightDeg: initDeg.right,
 
@@ -89,10 +89,23 @@ Page({
     if (userId) {
       this.getSettingData(userId);
     }
+
   },
+  onHide: function () {
+    var isRuning=this.data.isRuning;
+    if (!isRuning) {
+      this.timer = setInterval((function () {
+        this.updateTimer()
+        this.startNameAnimation()
+      }).bind(this), 1000)
+    } else {
+      this.stopTimer();
+    }
+  },
+
   //开始任务
   startTimer: function (e) {
-    let startTime = Date.now()
+    let startTime = Date.now();
     let isRuning = this.data.isRuning
     let dataIndex = e.target.dataset.index;
     let showTime = this.data['workTime']
@@ -106,7 +119,7 @@ Page({
         this.startNameAnimation()
       }).bind(this), 1000)
     } else {
-      this.stopTimer()
+      this.stopTimer();
     }
 
     this.setData({

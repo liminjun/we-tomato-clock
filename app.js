@@ -56,8 +56,6 @@ App({
     if (!userId) {
       wx.BaaS.login(false)
         .then(res => {
-          console.log('BaaS is logined!');
-          console.log("用户在用户表(知晓云)中的 ID",res.id);
         }).catch(err => {
           console.dir(err);
         })

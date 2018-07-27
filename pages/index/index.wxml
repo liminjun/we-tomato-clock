@@ -15,7 +15,7 @@
 			
 			<text wx:if="{{!completed}}" class="timer_time">{{remainTimeText}}</text>
 			
-			<text wx:if="{{isRuning}}" animation="{{nameAnimation}}" class="timer_taskName">{{taskName}}{{completed ? '已完成！' : '中'}}</text>
+			<text  animation="{{nameAnimation}}" class="timer_taskName">{{taskName}}{{completed ? '已完成！' : '中'}}</text>
 			<image wx:if="{{completed}}" class="timer_done" src="../../image/complete.png"></image>
 		</view>
 		<!--<input 
@@ -38,17 +38,7 @@
 	</view>
 
 
-	<!--<view class="timer_footer">
-		<view bindtap="startTimer" data-type="work" id="btn-work" class="timer_ctrl {{isRuning ? 'hide' : ''}}">工作</view>
 
-		<view bindtap="startTimer" data-type="study" id="btn-study" class="timer_ctrl {{isRuning ? 'hide' : ''}}">学习</view>
-
-	</view>
-	<view class="timer_footer">
-		<view bindtap="startTimer" data-type="sport" id="btn-sport" class="timer_ctrl {{isRuning ? 'hide' : ''}}">运动</view>
-
-		<view bindtap="startTimer" data-type="summary" id="btn-summary" class="timer_ctrl {{isRuning? 'hide' : ''}}">总结</view>
-	</view>-->
 	<view class="btn-action {{isRuning? 'btn-show' : ''}}">
 		<!--<button bindtap="pauseTimer" class="btn-pause" type="default">暂停计时</button>-->
 		<button bindtap="cancelTimer" class="btn-cancel" type="warn">放弃</button>

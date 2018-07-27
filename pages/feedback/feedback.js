@@ -39,7 +39,7 @@ Page({
   },
   //bindCategoryChange
   bindCategoryChange: function (e) {
-    console.log('picker category 发生选择改变，携带值为', e.detail.value);
+
 
     this.setData({
       categoryIndex: e.detail.value
