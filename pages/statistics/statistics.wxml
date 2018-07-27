@@ -1,3 +1,4 @@
+<ad unit-id="adunit-1af721c93f689295"></ad>
 <view wx:if="{{records.length}}">
 	<scroll-view class="container" scroll-y="true">
 		<view class="log panel">
